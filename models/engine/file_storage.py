@@ -8,9 +8,24 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
-        """Returns a dictionary of models currently in storage"""
-        return FileStorage.__objects
+    def all(self, cls=None):
+        """
+        Returns a dictionary of models currently in storage optionally
+        filtered by class.
+
+        Args:
+            cls (Class, optional): The class to filter object by.
+
+        Returns:
+            dict or list: A dictonary or list containing instances of
+            hbnb models.
+        """
+        if cls:
+            return {
+                key: obj for key, obj in self.__objects.items() if
+                isinstance(obj, cls)
+            }
+        return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -36,8 +51,12 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
+                    'BaseModel': BaseModel,
+                    'User': User,
+                    'Place': Place,
+                    'State': State,
+                    'City': City,
+                    'Amenity': Amenity,
                     'Review': Review
                   }
         try:
@@ -45,6 +64,16 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
+
+    def delete(self, obj=None):
+        """
+        Deletes an object from the storage dictionary.
+        Args:
+            obj: The object to delete from the storage dictionary.
+        """
+        if obj is not None:
+            key = f"{type(obj).__name__}.{obj.id}"
+            self.__objects.pop(key, None)
