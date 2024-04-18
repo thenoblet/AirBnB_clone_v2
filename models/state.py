@@ -17,7 +17,7 @@ class State(BaseModel, Base):
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
         cities = relationship(
-            "City", backref="state", cascade="all, delete, delete-orphan"
+            "City", backref="states", cascade="all, delete, delete-orphan"
         )
 
     elif getenv("HBNB_TYPE_STORAGE") == "file":

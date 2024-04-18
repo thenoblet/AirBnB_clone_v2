@@ -131,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
         
         new_instance = HBNBCommand.classes[class_name]()
         new_instance.__dict__.update(self.parse_params(' '.join(params[1:])))
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
 
     def parse_params(self, params):
@@ -227,22 +227,23 @@ class HBNBCommand(cmd.Cmd):
         print("[Usage]: destroy <className> <objectId>\n")
 
     def do_all(self, args):
-        """ Shows all objects, or all objects of a class"""
+        """Shows all objects, or all objects of a class"""
         print_list = []
 
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
+            args = args.split(" ")[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
+            for k, v in storage.all().items():
+                if k.split(".")[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
+
 
     def help_all(self):
         """ Help information for the all command """
