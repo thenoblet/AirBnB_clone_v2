@@ -72,6 +72,7 @@ def do_deploy(archive_path: str) -> bool:
     # Create a new symbolic link /data/web_static/current
     # linked to the new version
     run(f"sudo ln -s {release_folder} /data/web_static/current")
+    run("sudo chown -R ubuntu:ubuntu /data/web_static/current")
 
     print("New version deployed successfully!")
     return True
