@@ -1,11 +1,15 @@
 #!/usr/bin/python3
 
+"""This fabric script generates a .tgz archive from the contents of the
+web_static folder of the AirBnB Clone repo."""
+
 from fabric.operations import local
 import os
 from datetime import datetime
 
 
 def do_pack():
+    """Generates a .tgz archive from the contents of the web_static folder."""
     # Check if web_static folder exists
     if os.path.exists("web_static") is False:
         return None
@@ -24,7 +28,6 @@ def do_pack():
 
     # Check if archive was created successfully
     if result.failed:
-        print("Error: Failed to create archive.")
         return None
 
     # Return path to the generated archive
