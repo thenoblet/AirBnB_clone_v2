@@ -52,7 +52,7 @@ def do_deploy(archive_path: str) -> bool:
     archive_filename = os.path.splitext(os.path.basename(archive_path))[0]
     print(f"Archive Filename: {archive_filename}")
 
-    release_folder = f"/data/web_static/releases/{archive_filename}/"
+    release_folder = f"/data/web_static/releases/{archive_filename}"
     print(f"Release Folder: {release_folder}")
     run(f"mkdir -p /data/web_static/releases/{archive_filename}/")
     run(f"tar -xzf /tmp/{archive_filename}.tgz -C {release_folder}")
@@ -61,7 +61,7 @@ def do_deploy(archive_path: str) -> bool:
     run(f"rm /tmp/{archive_filename}.tgz")
 
     # Move the contents of the extracted folder to the release folder
-    run(f"mv -f {release_folder}/web_static/* {release_folder}")
+    run(f"mv -f {release_folder}/web_static/* {release_folder}/")
 
     # Remove the now empty web_static folder
     run(f"rm -rf {release_folder}/web_static")
