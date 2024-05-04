@@ -8,7 +8,7 @@ import os
 
 env.hosts = ["web-01.noblet.tech", "web-02.noblet.tech"]
 env.user = "ubuntu"
-env.key_filename = "~/.ssh/alx-server-key.pem"
+env.key_filename = "~/.ssh/id_rsa.pub"
 
 
 def do_pack():
