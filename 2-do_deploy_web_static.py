@@ -5,7 +5,7 @@ web_static folder of the AirBnB Clone repo."""
 
 import os
 from datetime import datetime
-from fabric.operations import local, put, run, env
+from fabric.operations import local, put, run, env, sudo
 
 env.hosts = ["web-01.noblet.tech", "web-02.noblet.tech"]
 env.user = "ubuntu"
@@ -42,27 +42,33 @@ def do_pack():
 def do_deploy(archive_path: str) -> bool:
     """Distributes an archive to web servers."""
     # Check if the archive file exists
-    if not os.path.exists(archive_path):
-        print(f"Error: Archive file {archive_path} does not exist.")
+    if not archive_path or not os.path.exists(archive_path):
         return False
-    
+
     # Upload the archive to /tmp/ directory on the web server
     put(archive_path, "/tmp/")
-    
+
     # Extract the archive to /data/web_static/releases/ folder
-    archive_filename = os.path.basename(archive_path)
-    release_folder = f"/data/web_static/releases/{archive_filename[:-4]}"
-    run(f"mkdir -p {release_folder}")
-    run(f"tar -xzf /tmp/{archive_filename} -C {release_folder}")
-    
+    archive_filename = os.path.splitext(os.path.basename(archive_path))[0]
+    release_folder = f"/data/web_static/releases/{archive_filename}"
+    run(f"mkdir -p /data/web_static/releases/{archive_filename}/")
+    run(f"tar -xzf /tmp/{archive_filename}.tgz -C {release_folder}")
+
     # Delete the archive from the web server
-    run(f"rm /tmp/{archive_filename}")
-    
+    run(f"rm /tmp/{archive_filename}.tgz")
+
+    # Move the contents of the extracted folder to the release folder
+    run(f"mv {release_folder}/web_static/* {release_folder}/")
+
+    # Remove the now empty web_static folder
+    run(f"rm -rf {release_folder}/web_static")
+
     # Delete the symbolic link /data/web_static/current
     run("sudo rm -rf /data/web_static/current")
-    
-    # Create a new symbolic link /data/web_static/current linked to the new version
+
+    # Create a new symbolic link /data/web_static/current
+    # linked to the new version
     run(f"sudo ln -s {release_folder} /data/web_static/current")
-    
+
     print("New version deployed successfully!")
     return True
