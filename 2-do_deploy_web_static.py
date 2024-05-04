@@ -50,10 +50,8 @@ def do_deploy(archive_path: str) -> bool:
 
     # Extract the archive to /data/web_static/releases/ folder
     archive_filename = os.path.splitext(os.path.basename(archive_path))[0]
-    print(f"Archive Filename: {archive_filename}")
 
     release_folder = f"/data/web_static/releases/{archive_filename}"
-    print(f"Release Folder: {release_folder}")
     run(f"mkdir -p /data/web_static/releases/{archive_filename}/")
     run(f"tar -xzf /tmp/{archive_filename}.tgz -C {release_folder}")
 
@@ -72,6 +70,7 @@ def do_deploy(archive_path: str) -> bool:
     # Create a new symbolic link /data/web_static/current
     # linked to the new version
     run(f"sudo ln -s {release_folder} /data/web_static/current")
+    run("sudo chown -R ubuntu:ubuntu /data/web_static/current")
 
     print("New version deployed successfully!")
     return True
