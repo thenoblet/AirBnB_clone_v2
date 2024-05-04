@@ -41,34 +41,27 @@ def do_pack():
 def do_deploy(archive_path: str) -> bool:
     """Distributes an archive to web servers."""
     # Check if the archive file exists
-    if not archive_path:
+    if not os.path.exists(archive_path):
+        print(f"Error: Archive file {archive_path} does not exist.")
         return False
-
-    if os.path.exists(archive_path) is False:
-        return False
-
-    archive_name = archive_path.split("/")[-1]
-    archive_name_no_ext = archive_name.split(".")[0]
-
+    
+    # Upload the archive to /tmp/ directory on the web server
     put(archive_path, "/tmp/")
-    run(f"mkdir -p /data/web_static/releases/{archive_name_no_ext}/")
-    run(
-        f"tar -xzf /tmp/{archive_name} -C "
-        f"/data/web_static/releases/{archive_name_no_ext}/"
-    )
-    run(f"rm /tmp/{archive_name}")
-    run(
-        f"mv /data/web_static/releases/{archive_name_no_ext}/web_static/* "
-        f"/data/web_static/releases/{archive_name_no_ext}/"
-    )
-    run(
-        f"rm -rf /data/web_static/releases/{archive_name_no_ext}/web_static"
-    )
-    run("rm -rf /data/web_static/current")
-    run(
-        f"ln -s /data/web_static/releases/{archive_name_no_ext}/ "
-        "/data/web_static/current"
-    )
-
-    print("New version deployed!")
+    
+    # Extract the archive to /data/web_static/releases/ folder
+    archive_filename = os.path.basename(archive_path)
+    release_folder = f"/data/web_static/releases/{archive_filename[:-4]}"
+    run(f"mkdir -p {release_folder}")
+    run(f"tar -xzf /tmp/{archive_filename} -C {release_folder}")
+    
+    # Delete the archive from the web server
+    run(f"rm /tmp/{archive_filename}")
+    
+    # Delete the symbolic link /data/web_static/current
+    run("sudo rm -rf /data/web_static/current")
+    
+    # Create a new symbolic link /data/web_static/current linked to the new version
+    run(f"sudo ln -s {release_folder} /data/web_static/current")
+    
+    print("New version deployed successfully!")
     return True
