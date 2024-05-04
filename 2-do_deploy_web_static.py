@@ -3,8 +3,9 @@
 """This fabric script generates a .tgz archive from the contents of the
 web_static folder of the AirBnB Clone repo."""
 
-from fabric.operations import local, put, run, env
 import os
+from datetime import datetime
+from fabric.operations import local, put, run, env
 
 env.hosts = ["web-01.noblet.tech", "web-02.noblet.tech"]
 env.user = "ubuntu"

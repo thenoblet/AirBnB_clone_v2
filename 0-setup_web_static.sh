@@ -27,9 +27,7 @@ sudo chown -R ubuntu:ubuntu /data/
 
 # Update Nginx configuration
 config="server {
-    listen 80;
-    listen [::]:80;
-    server_name localhost;
+    server_name _;
 
     location /hbnb_static/ {
         alias /data/web_static/current/;
