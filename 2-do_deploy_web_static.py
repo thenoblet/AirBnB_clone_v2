@@ -40,7 +40,7 @@ def do_pack():
 
 
 def do_deploy(archive_path: str) -> bool:
-    """Distributes an archive to web servers."""
+    """Distributes an archive to web servers remotely"""
     # Check if the archive file exists
     if not archive_path or not os.path.exists(archive_path):
         return False
