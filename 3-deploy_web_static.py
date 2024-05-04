@@ -39,6 +39,7 @@ def do_pack():
     # print(f"Archive created successfully: {archive_path}")
     return archive_path
 
+
 def do_deploy(archive_path: str) -> bool:
     """Distributes an archive to your web servers."""
     if not archive_path:
