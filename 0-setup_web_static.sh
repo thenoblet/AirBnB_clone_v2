@@ -38,9 +38,9 @@ config="server {
 
 # Remove default configuration and add new one
 sudo rm -f /etc/nginx/sites-enabled/default
-sudo echo "$config" | sudo tee /etc/nginx/sites-available/hbnb_static
+#sudo echo "$config" | sudo tee /etc/nginx/sites-available/hbnb_static
 sudo ln -sf /etc/nginx/sites-available/hbnb_static /etc/nginx/sites-enabled/
 
 # Restart Nginx to apply changes
-sudo nginx restart
+service nginx restart
 
