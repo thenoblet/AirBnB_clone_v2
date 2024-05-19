@@ -23,7 +23,6 @@ from flask import Flask
 app = Flask("__name__")
 
 
-@app.route('/', strict_slashes=False)
 def home():
     """
     Handles requests to the root URL ('/') and returns a welcome message.
@@ -34,7 +33,9 @@ def home():
     return "Hello HBNB!"
 
 
-@app.route('/hbnb', strict_slashes=False)
+app.add_url_rule("/", "home", home, strict_slashes=False)
+
+
 def holberton():
     """
     Handles requests to the '/hbnb' URL and returns a simple message.
@@ -45,7 +46,14 @@ def holberton():
     return "HBNB"
 
 
-# @app.route("/c/<text>", strict_slashes=False)
+app.add_url_rule(
+        "/hbnb",
+        "holberton",
+        holberton,
+        strict_slashes=False
+)
+
+
 def c_is_fun(text):
     """
     Handles requests to the '/c/<text>' URL and returns
