@@ -2,7 +2,8 @@
 """
 flask_app.py
 
-This module sets up a basic Flask web application that responds with "Hello HBNB" when accessed.
+This module sets up a basic Flask web application that
+responds with "Hello HBNB" when accessed.
 
 Imports:
     Flask from the flask package.
@@ -15,10 +16,12 @@ from flask import Flask
 
 app = Flask(__name__)
 
+
 @app.route('/', strict_slashes=False)
 def home():
     """
-    The home function handles requests to the root URL ('/') and returns a simple greeting.
+    The home function handles requests to the root URL ('/')
+    and returns a simple greeting.
 
     Returns:
         str: A welcome message "Hello HBNB".
