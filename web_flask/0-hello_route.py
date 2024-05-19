@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 """
-flask_app.py
-
 This module sets up a basic Flask web application that
 responds with "Hello HBNB" when accessed.
 
