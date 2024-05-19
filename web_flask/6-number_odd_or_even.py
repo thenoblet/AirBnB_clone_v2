@@ -140,7 +140,7 @@ def number_odd_or_even(n):
     """
     parity = "even" if n % 2 == 0 else "odd"
     return render_template(
-            '6-number_oidd_or_even.html',
+            '6-number_odd_or_even.html',
             number=n,
             parity=parity
     )
