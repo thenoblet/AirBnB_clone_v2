@@ -25,8 +25,12 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """Returns a list of cities with the same state_id"""
+            # print(f"Getting cities for state: {self.id}") # debug
             city_list = []
             for city in models.storage.all(City).values():
+                # print(f"Checking city: {city}")  # Debug statement
                 if city.state_id == self.id:
                     city_list.append(city)
+                    # print(f"Added city: {city}")  # Debug statement
+            # print(f"City list for state {self.id}: {city_list}")  # Debug statement
             return city_list
