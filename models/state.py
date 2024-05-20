@@ -32,5 +32,5 @@ class State(BaseModel, Base):
                 if city.state_id == self.id:
                     city_list.append(city)
                     # print(f"Added city: {city}")  # Debug statement
-            # print(f"City list for state {self.id}: {city_list}")  # Debug statement
+            # print(f"City list for state {self.id}: {city_list}")
             return city_list
